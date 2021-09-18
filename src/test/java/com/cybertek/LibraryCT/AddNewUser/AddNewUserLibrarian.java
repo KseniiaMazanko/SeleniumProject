@@ -1,6 +1,9 @@
 package com.cybertek.LibraryCT.AddNewUser;
 
+import com.cybertek.utility.TestBase;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AddNewUserLibrarian {
+public class AddNewUserLibrarian extends TestBase {
 
 
     //MAKE SURE TO CHANGE THE EMAIL FOR EVERY NEW TEST TO AVOID THE ERROR 'EMAIL ALREADY EXIST'
@@ -31,16 +34,16 @@ public class AddNewUserLibrarian {
      */
 
 
-    public static void main(String[] args) throws InterruptedException {
 //
 
+        @Test
+        public void addNewUser() throws InterruptedException {
         ArrayList<String> librariansCredentials = new ArrayList<>(Arrays.asList("librarian43@library","librarian18@library"));
 
         for (String eachLibrarian : librariansCredentials) {
 
+
             //Given librarian is on the homePage
-            WebDriverManager.chromedriver().setup();
-            WebDriver driver = new ChromeDriver();
             driver.navigate().to("http://library2.cybertekschool.com/login.html");
 
             WebElement emailBox = driver.findElement(By.id("inputEmail"));
@@ -49,12 +52,8 @@ public class AddNewUserLibrarian {
             WebElement password = driver.findElement(By.id("inputPassword"));
             password.sendKeys("Sdet2022*");
 
-            Thread.sleep(2000);
-
             WebElement signInButton = driver.findElement(By.cssSelector("#login-form > button"));
             signInButton.click();
-
-            Thread.sleep(5000);
 
 
             //verifying before count
@@ -67,14 +66,11 @@ public class AddNewUserLibrarian {
             WebElement usersModule = driver.findElement(By.xpath("//*[text()='Users']"));
             usersModule.click();
 
-            Thread.sleep(2000);
 
             //    And librarian click “+Add User” button
 
             WebElement addANewUser = driver.findElement(By.xpath("//span/a"));
             addANewUser.click();
-
-            Thread.sleep(2000);
 
             //When librarian enter full name, password, email and address
 
@@ -87,10 +83,10 @@ public class AddNewUserLibrarian {
 
             WebElement email = driver.findElement(By.cssSelector("input[name='email']"));
             if(eachLibrarian.equals("librarian43@library")) {
-                email.sendKeys("peterPark@gmail.com");
+                email.sendKeys("peterPark5@gmail.com");
             }
             else{
-                email.sendKeys("peterPark2@gmail.com");
+                email.sendKeys("peterPark6@gmail.com");
             }
 
             WebElement userGroup = driver.findElement(By.id("user_group_id"));
@@ -104,7 +100,6 @@ public class AddNewUserLibrarian {
             WebElement address = driver.findElement(By.id("address"));
             address.sendKeys("10102 Park Ave, New York, NY, 10001");
 
-            Thread.sleep(3000);
 
 
             //And librarian click save changes
@@ -116,9 +111,7 @@ public class AddNewUserLibrarian {
 
             driver.navigate().to("https://library2.cybertekschool.com/#dashboard");
             driver.navigate().refresh();
-            Thread.sleep(5000);
-
-
+            Thread.sleep(3000);
 
             //Then verify a new user is created
 
@@ -126,43 +119,24 @@ public class AddNewUserLibrarian {
             int numberAfter = Integer.parseInt(afterAddingTheUser);
             System.out.println("numberAfter = " + numberAfter);
 
-            if(numberAfter==numberBefore+1){
-                System.out.println("Test has passed for user " + eachLibrarian);
-            }
-            else{
-                System.out.println("Test has failed for user " + eachLibrarian);
-            }
 
+            Assertions.assertTrue(numberAfter==numberBefore+1);
 
-            driver.quit();
+            //   user Logs Out because of the loop
+            WebElement usernameLink = driver.findElement(By.cssSelector("li>a[href='#']"));
+            usernameLink.click();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            driver.quit();
-
-            
-
-
-
-
+            Thread.sleep(1000);
+            WebElement logOutLink = driver.findElement(By.cssSelector("div>a[href='#']"));
+            logOutLink.click();
 
 
 
         }
 
     }
-
-
 }
+
+
+
+

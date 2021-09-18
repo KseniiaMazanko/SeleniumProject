@@ -1,6 +1,9 @@
 package com.cybertek.LibraryCT.LoginStory;
 
+import com.cybertek.utility.TestBase;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StudentLoginsSuccessfully {
+public class StudentLoginsSuccessfully extends TestBase {
 
-    public static void main(String[] args) throws InterruptedException {
+
 
         /*
         student54@library
@@ -33,23 +36,21 @@ public class StudentLoginsSuccessfully {
         Then verify that there are 2 modules on the page
 
          */
+    @Test
+    public void loginStudent() throws InterruptedException {
 
         ArrayList<String> studentsCredentials = new ArrayList<>(Arrays.asList("student54@library", "student55@library",
                 "student56@library"));
 
         for (String eachStudent : studentsCredentials) {
-            WebDriverManager.chromedriver().setup();
-            WebDriver driver = new ChromeDriver();
+
             driver.get("http://library2.cybertekschool.com/login.html");
 
             //Then verify that the URL is “https://library2.cybertekschool.com/login.html”
-            String currentUrl = driver.getCurrentUrl();
-            if(currentUrl.equals("https://library2.cybertekschool.com/login.html")){
-                System.out.println("URL is verified");
-            }
-            else{
-                System.out.println("URL is incorrect");
-            }
+            String currentResult = driver.getCurrentUrl();
+            String expectedResult = "https://library2.cybertekschool.com/login.html";
+
+            Assertions.assertEquals(expectedResult,currentResult);
 
             //When student enters valid email address and password
             WebElement email = driver.findElement(By.id("inputEmail"));
@@ -65,21 +66,16 @@ public class StudentLoginsSuccessfully {
 
             //Then verify that there are 2 modules on the page
             List<WebElement> modules = driver.findElements(By.xpath("//li[@class='nav-item']"));
-            if(modules.size()==2){
-                WebElement firstModule = driver.findElement(By.xpath("//li[1]/a"));
-                WebElement secondModule = driver.findElement(By.xpath("//li[2]/a"));
-                if(firstModule.getText().equals("Books") && secondModule.getText().equals("Borrowing Books")){
-                    System.out.println("Test has passed for user " + eachStudent);
-                }
 
-            }
-            else{
-                System.out.println("Test has failed for user " + eachStudent);
-            }
+            Assertions.assertTrue(modules.size()==2);
 
-            driver.quit();
+            //   user Logs Out because of the loop!
+            WebElement usernameLink = driver.findElement(By.cssSelector("li>a[href='#']"));
+            usernameLink.click();
 
-
+            Thread.sleep(1000);
+            WebElement logOutLink = driver.findElement(By.cssSelector("div>a[href='#']"));
+            logOutLink.click();
 
 
 

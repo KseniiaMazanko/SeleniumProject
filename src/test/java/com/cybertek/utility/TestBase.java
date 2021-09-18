@@ -31,13 +31,10 @@ public abstract class TestBase {
 
     @AfterEach
     public void closeBrowser(){
+
         driver.quit();
     }
 
-    @AfterAll
-    public static void teardown(){
-        System.out.println("@After All, Nothing to do here");
-    }
 
 
 }

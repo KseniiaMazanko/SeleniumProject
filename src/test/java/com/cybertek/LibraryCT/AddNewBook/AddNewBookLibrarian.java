@@ -1,6 +1,9 @@
 package com.cybertek.LibraryCT.AddNewBook;
 
+import com.cybertek.utility.TestBase;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AddNewBookLibrarian {
+public class AddNewBookLibrarian extends TestBase {
 
     /*
     Given librarian is on the homePage
@@ -29,16 +32,15 @@ public class AddNewBookLibrarian {
     Then verify a new book is added
      */
 
+    @Test
+    public void addBook() throws InterruptedException {
 
-    public static void main(String[] args) throws InterruptedException {
 
         ArrayList <String> librariansCredentials = new ArrayList<>(Arrays.asList("librarian43@library","librarian18@library"));
 
         for (String eachLibrarian : librariansCredentials) {
 
             //Given librarian is on the homePage
-            WebDriverManager.chromedriver().setup();
-            WebDriver driver = new ChromeDriver();
             driver.navigate().to("http://library2.cybertekschool.com/login.html");
 
             WebElement emailBox = driver.findElement(By.id("inputEmail"));
@@ -47,12 +49,9 @@ public class AddNewBookLibrarian {
             WebElement password = driver.findElement(By.id("inputPassword"));
             password.sendKeys("Sdet2022*");
 
-            Thread.sleep(2000);
 
             WebElement signInButton = driver.findElement(By.cssSelector("#login-form > button"));
             signInButton.click();
-
-            Thread.sleep(5000);
 
 
             //verifying before count
@@ -65,13 +64,11 @@ public class AddNewBookLibrarian {
            WebElement booksModule = driver.findElement(By.xpath("//*[text()='Books']"));
            booksModule.click();
 
-            Thread.sleep(3000);
 
             //And librarian click “+Add Book” button
            WebElement addBook = driver.findElement(By.xpath("//*[@id=\"books\"]/div[1]/div[1]/span/a"));
            addBook.click();
 
-            Thread.sleep(2000);
 
             //When librarian enter BookName, ISBN, Year, Author, and Description
             WebElement book = driver.findElement(By.name("name"));
@@ -109,23 +106,24 @@ public class AddNewBookLibrarian {
             int numberAfter = Integer.parseInt(afterAddingABook);
             System.out.println("numberAfter = " + numberAfter);
 
-            if(numberAfter-numberBefore==1){
-                System.out.println("Test has passed for librarian: " + eachLibrarian);
-            }
-            else{
-                System.out.println("Test has failed for librarian: " + eachLibrarian);
-            }
+            Assertions.assertTrue(numberBefore==numberAfter-1);
 
-            driver.quit();
+            //   user Logs Out because of the loop
+            WebElement usernameLink = driver.findElement(By.cssSelector("li>a[href='#']"));
+            usernameLink.click();
 
-            /* Alert alert = driver.switchTo().alert(); // switch to alert
+            Thread.sleep(1000);
+            WebElement logOutLink = driver.findElement(By.cssSelector("div>a[href='#']"));
+            logOutLink.click();
 
+
+
+            /*
+            Alert alert = driver.switchTo().alert(); // switch to alert
             String alertMessage= driver.switchTo().alert().getText(); // capture alert message
-
             System.out.println(alertMessage); // Print Alert Message
             Thread.sleep(5000);
-
-            */
+             */
 
         }
 

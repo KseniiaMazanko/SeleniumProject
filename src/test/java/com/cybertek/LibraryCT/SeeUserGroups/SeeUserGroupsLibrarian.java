@@ -1,11 +1,14 @@
 package com.cybertek.LibraryCT.SeeUserGroups;
 
 import com.cybertek.utility.TestBase;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,119 +30,49 @@ public class SeeUserGroupsLibrarian extends TestBase {
     @Test
     public void userGroup() throws InterruptedException {
 
-        /*ArrayList<String> librariansCredentials = new ArrayList<>(Arrays.asList("librarian43@library","librarian18@library"));
-        for (String eachLibrarian : librariansCredentials) {
-         */
+        ArrayList<String> credentials = new ArrayList<>(Arrays.asList("librarian43@library", "librarian18@library"));
 
-        String librarian1 = "librarian43@library";
+        for (String eachUser : credentials) {
 
-        driver.get("http://library2.cybertekschool.com/login.html");
+            driver.get("http://library2.cybertekschool.com/login.html");
 
-        WebElement emailBox = driver.findElement(By.id("inputEmail"));
-        emailBox.sendKeys(librarian1);
+            WebElement emailBox = driver.findElement(By.id("inputEmail"));
+            emailBox.sendKeys(eachUser);
 
-        WebElement password = driver.findElement(By.id("inputPassword"));
-        password.sendKeys("Sdet2022*");
+            WebElement password = driver.findElement(By.id("inputPassword"));
+            password.sendKeys("Sdet2022*");
 
-        WebElement signInButton = driver.findElement(By.cssSelector("#login-form > button"));
-        signInButton.click();
+            WebElement signInButton = driver.findElement(By.cssSelector("#login-form > button"));
+            signInButton.click();
 
-        //Given user is on the homePage
-        Thread.sleep(2000);
-        //When librarian click Users module
+            //Given user is on the homePage
+            Thread.sleep(2000);
+            //When librarian click Users module
 
 
-        WebElement userModule = driver.findElement(By.xpath("//li/a[@href='#users']"));
-        userModule.click();
+            WebElement userModule = driver.findElement(By.xpath("//li/a[@href='#users']"));
+            userModule.click();
 
-        //And librarian click user group dropdown
+            //And librarian click user group dropdown
 
-        WebElement groupSelect = driver.findElement(By.id("user_groups"));
-        groupSelect.click();
+            WebElement groupSelect = driver.findElement(By.id("user_groups"));
+            groupSelect.click();
 
 
-        //Then verify librarian have 3 options
-        Select selectObj = new Select(groupSelect);
-        List<WebElement> groupOptions = selectObj.getOptions();
+            //Then verify librarian have 3 options
+            Select selectObj = new Select(groupSelect);
+            List<WebElement> groupOptions = selectObj.getOptions();
 
-        if(groupOptions.size()==3){
+            Assertions.assertTrue(groupOptions.size()==3);
 
-            for (int i = 0; i < groupOptions.size(); i++) {
-                boolean isAll = groupOptions.get(i).equals("ALL");
-                boolean isLibrarian = groupOptions.get(i).equals("Librarian");
-                boolean isStudents = groupOptions.get(i).equals("Students");
-                if(isAll&&isLibrarian&&isStudents){
-                    System.out.println("Test has passed for " + librarian1);
-                }
-                }
-            }
+            //   user Logs Out because of the loop
+            WebElement usernameLink = driver.findElement(By.cssSelector("li>a[href='#']"));
+            usernameLink.click();
 
-        else{
-            System.out.println("Test has failed for " + librarian1);
+            Thread.sleep(1000);
+            WebElement logOutLink = driver.findElement(By.cssSelector("div>a[href='#']"));
+            logOutLink.click();
+
         }
-
-        driver.quit();
-
     }
-
-    @Test
-    public void userGroup2() throws InterruptedException {
-
-        /*ArrayList<String> librariansCredentials = new ArrayList<>(Arrays.asList("librarian43@library","librarian18@library"));
-        for (String eachLibrarian : librariansCredentials) {
-         */
-
-        String librarian2 = "librarian18@library";
-
-        driver.get("http://library2.cybertekschool.com/login.html");
-
-        WebElement emailBox = driver.findElement(By.id("inputEmail"));
-        emailBox.sendKeys(librarian2);
-
-        WebElement password = driver.findElement(By.id("inputPassword"));
-        password.sendKeys("Sdet2022*");
-
-        WebElement signInButton = driver.findElement(By.cssSelector("#login-form > button"));
-        signInButton.click();
-
-        //Given user is on the homePage
-        Thread.sleep(2000);
-        //When librarian click Users module
-
-
-        WebElement userModule = driver.findElement(By.xpath("//li/a[@href='#users']"));
-        userModule.click();
-
-        //And librarian click user group dropdown
-
-        WebElement groupSelect = driver.findElement(By.id("user_groups"));
-        groupSelect.click();
-
-
-        //Then verify librarian have 3 options
-        Select selectObj = new Select(groupSelect);
-        List<WebElement> groupOptions = selectObj.getOptions();
-
-        if(groupOptions.size()==3){
-
-            for (int i = 0; i < groupOptions.size(); i++) {
-                boolean isAll = groupOptions.get(i).equals("ALL");
-                boolean isLibrarian = groupOptions.get(i).equals("Librarian");
-                boolean isStudents = groupOptions.get(i).equals("Students");
-                if(isAll&&isLibrarian&&isStudents){
-                    System.out.println("Test has passed for " + librarian2);
-                }
-            }
-        }
-
-        else{
-            System.out.println("Test has failed for " + librarian2);
-        }
-
-        driver.quit();
-
-    }
-
-
-
 }

@@ -1,12 +1,15 @@
 package com.cybertek.LibraryCT.LoginStory;
 
+import com.cybertek.utility.TestBase;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class LoginWithInvalidCredentials {
+public class LoginWithInvalidCredentials extends TestBase {
 
     /*
     Given user is on the loginPage
@@ -17,11 +20,10 @@ public class LoginWithInvalidCredentials {
 
     Then verify the error message “Sorry, Wrong Email or Password”
      */
+    @Test
+    public void invalidCredentials() throws InterruptedException {
 
-    public static void main(String[] args) throws InterruptedException {
 
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
         driver.get("http://library2.cybertekschool.com/login.html");
 
         //When student enters invalid email address or password
@@ -38,13 +40,11 @@ public class LoginWithInvalidCredentials {
 
         //Then verify the error message “Sorry, Wrong Email or Password”
         WebElement alert = driver.findElement(By.xpath("//*[text()='Sorry, Wrong Email or Password']"));
-        if(alert.getText().equals("Sorry, Wrong Email or Password")){
-            System.out.println("Test has passed");
-        }
+        String actualResult = alert.getText();
+        String expectedResult = "Sorry, Wrong Email or Password";
+        Assertions.assertEquals(expectedResult,actualResult);
 
         Thread.sleep(2000);
-
-        driver.quit();
 
 
 
