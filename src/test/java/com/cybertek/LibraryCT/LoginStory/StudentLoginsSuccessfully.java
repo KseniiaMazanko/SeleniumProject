@@ -16,15 +16,6 @@ import java.util.List;
 public class StudentLoginsSuccessfully extends TestBase {
 
 
-
-        /*
-        student54@library
-        student55@library
-        student56@library
-
-        Sdet2022*
-         */
-
         /*Given student is on the loginPage
 
         Then verify that the URL is “https://library2.cybertekschool.com/login.html”
@@ -76,11 +67,6 @@ public class StudentLoginsSuccessfully extends TestBase {
             Thread.sleep(1000);
             WebElement logOutLink = driver.findElement(By.cssSelector("div>a[href='#']"));
             logOutLink.click();
-
-
-
-
-
 
 
         }
