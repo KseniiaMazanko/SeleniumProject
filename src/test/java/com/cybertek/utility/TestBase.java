@@ -24,7 +24,7 @@ public abstract class TestBase {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
          */
-        driver=WebDriverFactory.getDriver("chrome");
+        driver=Driver.getDriver(); //using Singleton pattern instead of this --> //WebDriverFactory.getDriver("chrome");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
     }
